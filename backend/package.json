@@ -1,4 +1,8 @@
 {
+  "scripts": {
+    "start": "node server.js"
+  }
+},{
   "name": "njhps-complaint-backend",
   "version": "1.0.0",
   "description": "NJHPS Civil Complaint Cell Management System - Backend API",
