@@ -12,26 +12,34 @@ import {
 } from '../controllers/complaintController.js';
 import { protect, authorize } from '../middleware/auth.js';
 
-
 const router = express.Router();
 
-router.use(protect); // every complaint route requires authentication
+// Every complaint route requires authentication
+router.use(protect);
 
+// Track complaint
 router.get('/track/:complaintNumber', trackComplaint);
-router.get('/history/all', getAllHistory); // must be registered before the /:id route
 
+// Complaint history
+router.get('/history/all', getAllHistory);
+
+// Get all complaints and create a complaint
 router
   .route('/')
   .get(getComplaints)
-  .post(upload.fields([{ name: 'beforeImages', maxCount: 10 }]), createComplaint);
+  .post(createComplaint);
 
+// Get, update and delete complaint by ID
 router
   .route('/:id')
   .get(getComplaintById)
   .put(updateComplaint)
   .delete(authorize('admin'), deleteComplaint);
 
+// Update complaint status
 router.patch('/:id/status', updateComplaintStatus);
-router.post('/:id/after-images', upload.array('afterImages', 10), uploadAfterImages);
+
+// Upload after images (temporarily without image upload middleware)
+router.post('/:id/after-images', uploadAfterImages);
 
 export default router;
