@@ -11,7 +11,7 @@ import {
   getAllHistory,
 } from '../controllers/complaintController.js';
 import { protect, authorize } from '../middleware/auth.js';
-import { upload } from '../config/cloudinary.js';
+
 
 const router = express.Router();
 
