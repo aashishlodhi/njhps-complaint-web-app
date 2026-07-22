@@ -20,7 +20,7 @@ const app = express();
 // Allowed frontend URLs
 const allowedOrigins = [
   'http://localhost:5173',
-  'https://njhps-complaint-web-app-kkk7.vercel.app',
+  'https://njhps-complaint-app.vercel.app',
 ];
 
 // Security Middleware
