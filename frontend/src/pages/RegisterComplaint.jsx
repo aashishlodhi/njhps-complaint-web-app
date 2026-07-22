@@ -9,23 +9,15 @@ const PRIORITIES = ['Normal', 'Medium', 'High', 'Emergency'];
 
 export default function RegisterComplaint() {
   const { register, handleSubmit, reset, formState: { errors, isSubmitting } } = useForm();
-  const [images, setImages] = useState([]);
   const [result, setResult] = useState(null);
 
   const onSubmit = async (data) => {
     try {
-      const formData = new FormData();
-      Object.entries(data).forEach(([key, value]) => formData.append(key, value));
-      images.forEach((file) => formData.append('beforeImages', file));
-
-      const { data: res } = await api.post('/complaints', formData, {
-        headers: { 'Content-Type': 'multipart/form-data' },
-      });
+      const { data: res } = await api.post('/complaints', data);
 
       setResult(res);
       toast.success('Complaint registered successfully');
       reset();
-      setImages([]);
     } catch (err) {
       toast.error(err.response?.data?.message || 'Failed to register complaint');
     }
@@ -123,24 +115,6 @@ export default function RegisterComplaint() {
             <textarea rows={4} className="input-field" {...register('description', { required: true })} />
             {errors.description && <p className="text-xs text-red-500 mt-1">Required</p>}
           </div>
-        </section>
-
-        <section>
-          <h3 className="font-semibold mb-3 text-sm text-gray-500 uppercase tracking-wide">Images (Before Repair)</h3>
-          <input
-            type="file"
-            multiple
-            accept="image/jpeg,image/png,image/jpg"
-            onChange={(e) => setImages(Array.from(e.target.files))}
-            className="block w-full text-sm file:mr-4 file:rounded-xl file:border-0 file:bg-brand-50 file:px-4 file:py-2 file:text-brand-700 dark:file:bg-brand-900/40 dark:file:text-brand-400"
-          />
-          {images.length > 0 && (
-            <div className="flex flex-wrap gap-3 mt-3">
-              {images.map((file, i) => (
-                <img key={i} src={URL.createObjectURL(file)} alt="" className="h-20 w-20 object-cover rounded-lg border" />
-              ))}
-            </div>
-          )}
         </section>
 
         <button type="submit" disabled={isSubmitting} className="btn-primary w-full">

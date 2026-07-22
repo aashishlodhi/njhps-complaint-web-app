@@ -43,9 +43,6 @@ const complaintSchema = new mongoose.Schema(
     description: { type: String, required: true },
     location: { type: String, trim: true },
 
-    beforeImages: [{ url: String, publicId: String }],
-    afterImages: [{ url: String, publicId: String }],
-
     status: { type: String, enum: STATUS_VALUES, default: 'Registered', index: true },
 
     assignedEngineer: { type: mongoose.Schema.Types.ObjectId, ref: 'Engineer' },

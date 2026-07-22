@@ -10,15 +10,9 @@ import { generateComplaintNumber } from '../utils/generateComplaintNumber.js';
 export const createComplaint = asyncHandler(async (req, res) => {
   const complaintNumber = await generateComplaintNumber();
 
-  const beforeImages = (req.files?.beforeImages || []).map((f) => ({
-    url: f.path,
-    publicId: f.filename,
-  }));
-
   const complaint = await Complaint.create({
     ...req.body,
     complaintNumber,
-    beforeImages,
     registeredBy: req.user._id,
   });
 
@@ -200,23 +194,6 @@ export const updateComplaintStatus = asyncHandler(async (req, res) => {
     newStatus: status,
     remarks,
   });
-
-  res.json({ success: true, complaint });
-});
-
-// @desc    Upload "after repair" images to a complaint
-// @route   POST /api/complaints/:id/after-images
-// @access  Private (admin, operator)
-export const uploadAfterImages = asyncHandler(async (req, res) => {
-  const complaint = await Complaint.findById(req.params.id);
-  if (!complaint) {
-    res.status(404);
-    throw new Error('Complaint not found');
-  }
-
-  const afterImages = (req.files || []).map((f) => ({ url: f.path, publicId: f.filename }));
-  complaint.afterImages.push(...afterImages);
-  await complaint.save();
 
   res.json({ success: true, complaint });
 });

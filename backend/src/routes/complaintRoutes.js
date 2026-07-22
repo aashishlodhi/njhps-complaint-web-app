@@ -6,7 +6,6 @@ import {
   getComplaintById,
   updateComplaint,
   updateComplaintStatus,
-  uploadAfterImages,
   deleteComplaint,
   getAllHistory,
 } from '../controllers/complaintController.js';
@@ -31,7 +30,5 @@ router
   .delete(authorize('admin'), deleteComplaint);
 
 router.patch('/:id/status', updateComplaintStatus);
-
-router.post('/:id/after-images', uploadAfterImages);
 
 export default router;
